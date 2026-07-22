@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Age - Caffeine Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎂 Set Your Age</h1>
+
+        <p class="info-text">Your age helps us calculate the maximum daily caffeine amount for you.</p>
+
+        <form action="{{ url_for('set_age') }}" method="POST" class="drink-form">
+            <div class="form-group">
+                <label for="age">Your Age:</label>
+                <input type="number" name="age" id="age" min="1" max="120" required
+                       placeholder="Enter your age" value="{{ age if age else '' }}">
+            </div>
+
+            <button type="submit" class="btn">Save Age</button>
+        </form>
+
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">← Back to Home</a>
+    </div>
+</body>
+</html>

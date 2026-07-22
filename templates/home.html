@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caffeine Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        #progress-fill {
+            width: {{ '100' if percentage > 100 else percentage }}%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☕ Caffeine Tracker</h1>
+
+        {% if age %}
+            <div class="age-display">
+                Age: <strong>{{ age }}</strong> years old
+                <a href="{{ url_for('set_age') }}" class="btn-small">Change</a>
+            </div>
+        {% else %}
+            <div class="age-display warning">
+                ⚠️ No age set! <a href="{{ url_for('set_age') }}">Set your age</a> to see your daily caffeine maximum.
+            </div>
+        {% endif %}
+
+        <div class="stats-card">
+            <h2>Caffeine Intake Today</h2>
+            <div class="caffeine-numbers">
+                <span class="current">{{ total_caffeine }}mg</span>
+                <span class="divider">/</span>
+                <span class="max">{{ max_caffeine }}mg</span>
+            </div>
+
+            <div class="progress-container">
+                <div id="progress-fill" class="progress-bar
+                    {% if percentage >= 100 %}
+                        bar-red
+                    {% elif percentage > 80 %}
+                        bar-orange
+                    {% elif percentage > 50 %}
+                        bar-yellow
+                    {% else %}
+                        bar-green
+                    {% endif %}">
+                </div>
+            </div>
+
+            <div class="percentage-text">
+                {% if percentage >= 100 %}
+                    ⚠️ You've reached or exceeded the recommended amount!
+                {% elif percentage > 80 %}
+                    ⚠️ Approaching the recommended amount ({{ "%.1f"|format(percentage) }}%)
+                {% else %}
+                    {{ "%.1f"|format(percentage) }}% of recommended amount
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="{{ url_for('add_drink') }}" class="btn">+ Add Drink</a>
+            <a href="{{ url_for('set_age') }}" class="btn btn-secondary">Set Age</a>
+            <form action="{{ url_for('reset') }}" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Reset all drinks?')">Reset</button>
+            </form>
+        </div>
+
+        {% if drink_log %}
+        <div class="drink-log">
+            <h2>Drink Log</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Drink</th>
+                        <th>Size</th>
+                        <th>Caffeine</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for drink in drink_log %}
+                    <tr>
+                        <td>{{ drink['coffee_type'] }}</td>
+                        <td>{{ drink['size'] }}</td>
+                        <td>{{ drink['caffeine_mg'] }}mg</td>
+                        <td>{{ drink['timestamp'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
