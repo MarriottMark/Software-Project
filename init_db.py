@@ -3,7 +3,7 @@ import sqlite3
 conn = sqlite3.connect('caffeine.db')
 c = conn.cursor()
 
-# Coffee types with average caffeine content per size
+# Coffee types 
 c.execute('''
     CREATE TABLE IF NOT EXISTS coffee (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,7 +13,7 @@ c.execute('''
     )
 ''')
 
-# Age-based caffeine recommendations (mg per day)
+# Caffiene amount per age
 c.execute('''
     CREATE TABLE IF NOT EXISTS age_recommendations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +34,7 @@ c.execute('''
     )
 ''')
 
-# User profile (age)
+# User Age
 c.execute('''
     CREATE TABLE IF NOT EXISTS user_profile (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,7 +42,7 @@ c.execute('''
     )
 ''')
 
-# Insert coffee data (average caffeine values from FDA/Mayo Clinic)
+# Insert coffee data 
 coffee_data = [
     # Espresso-based drinks
     ('Espresso', 'Single', 63),
@@ -86,14 +86,13 @@ coffee_data = [
 
 c.executemany('INSERT OR IGNORE INTO coffee (type, size, caffeine_mg) VALUES (?, ?, ?)', coffee_data)
 
-# Age-based recommendations (mg per day)
-# Sources: FDA, American Academy of Pediatrics, Mayo Clinic
+# Age-based recommendations 
 age_recs = [
-    (0, 11, 0),       # Children: no caffeine recommended
-    (12, 17, 100),    # Teens: max 100mg
-    (18, 24, 200),    # Young adults: max 200mg
-    (25, 64, 400),    # Adults: max 400mg (FDA standard)
-    (65, 120, 200),   # Seniors: max 200mg (more sensitive)
+    (0, 11, 0),       
+    (12, 17, 100),    
+    (18, 24, 200),    
+    (25, 64, 400),    
+    (65, 120, 200),   
 ]
 
 c.executemany('INSERT OR IGNORE INTO age_recommendations (age_min, age_max, max_caffeine_mg) VALUES (?, ?, ?)', age_recs)

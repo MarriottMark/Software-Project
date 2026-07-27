@@ -11,6 +11,8 @@
         }
     </style>
 </head>
+<!-- This section is the main part of the home page of the website -->
+<!-- Displays the caffiene amoutn and other gathered information form the SQL Database -->
 <body>
     <div class="container">
         <h1>☕ Caffeine Tracker</h1>
@@ -22,7 +24,7 @@
             </div>
         {% else %}
             <div class="age-display warning">
-                ⚠️ No age set! <a href="{{ url_for('set_age') }}">Set your age</a> to see your daily caffeine maximum.
+                No age set! <a href="{{ url_for('set_age') }}">Set your age</a> to see your daily caffeine maximum.
             </div>
         {% endif %}
 
@@ -50,9 +52,9 @@
 
             <div class="percentage-text">
                 {% if percentage >= 100 %}
-                    ⚠️ You've reached or exceeded the recommended amount!
+                    You've reached or exceeded the recommended amount!
                 {% elif percentage > 80 %}
-                    ⚠️ Approaching the recommended amount ({{ "%.1f"|format(percentage) }}%)
+                    Approaching the recommended amount ({{ "%.1f"|format(percentage) }}%)
                 {% else %}
                     {{ "%.1f"|format(percentage) }}% of recommended amount
                 {% endif %}
